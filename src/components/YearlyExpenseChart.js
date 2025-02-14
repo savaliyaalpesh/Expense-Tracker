@@ -14,7 +14,7 @@ const YearlyExpenseChart = ({ expenses, year, darkMode }) => {
   }, []);
 
   const monthColors = {
-    January: "#FF5733", February: "#FF8D1A", March: "#FFC300", April: "#DAF7A6",
+    January: "#FF5733", February: "#FF8D1A", March: "#FFC300", April: "#b3f43a",
     May: "#33FF57", June: "#1AFFD5", July: "#3385FF", August: "#9D33FF",
     September: "#FF33A1", October: "#FF5733", November: "#C70039", December: "#900C3F",
   };

@@ -42,6 +42,9 @@ const ExpenseChart = ({ expenses, darkMode }) => {
     return <p className="text-center text-gray-500">No data available</p>;
   }
 
+  // Calculate total expenses
+  const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+
   // Custom Tooltip Component
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -61,8 +64,8 @@ const ExpenseChart = ({ expenses, darkMode }) => {
         Expense Chart by Category
       </h2>
 
-      <div className="w-full h-[300px] sm:h-[350px] flex flex-col items-center">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full flex flex-col items-center overflow-hidden">
+        <ResponsiveContainer width="100%" height={isMobile ? 300 : 400}>
           {isMobile ? (
             <PieChart>
               <Pie
@@ -100,16 +103,22 @@ const ExpenseChart = ({ expenses, darkMode }) => {
         </ResponsiveContainer>
 
         {isMobile && (
-          <div className="mt-4 text-left">
-            {chartData.map((entry, index) => (
-              <div key={index} className="inline-block mx-2 text-sm">
-                <span 
-                  className="inline-block w-4 h-4 mr-1 rounded-full" 
-                  style={{ backgroundColor: entry.fill }}
-                ></span>
-                {entry.name} ({((entry.value / expenses.reduce((sum, e) => sum + e.amount, 0)) * 100).toFixed(1)}%)
-              </div>
-            ))}
+          <div className="mt-4 text-left flex flex-wrap justify-start max-w-full">
+            {chartData.map((entry, index) => {
+              const percentage = totalExpenses > 0 
+                ? ((entry.value / totalExpenses) * 100).toFixed(1)
+                : 0;
+
+              return (
+                <div key={index} className="inline-block mx-2 mb-2 text-sm max-w-[calc(33%-8px)] sm:max-w-[calc(50%-8px)]">
+                  <span 
+                    className="inline-block w-4 h-4 mr-1 rounded-full" 
+                    style={{ backgroundColor: entry.fill }}
+                  ></span>
+                  {entry.name} ({percentage}%)
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
