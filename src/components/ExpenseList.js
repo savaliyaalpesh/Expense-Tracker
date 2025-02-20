@@ -1,15 +1,18 @@
 import React from "react";
 
-const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
+const ExpenseList = ({ expenses, editExpense, deleteExpense, darkMode }) => {
   const totalExpense = expenses.reduce((sum, exp) => sum + parseFloat(exp.amount), 0);
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
 
   return (
     <div className="p-4 border rounded mb-4 shadow-md dark:bg-gray-800">
-      <h2 className="text-lg sm:text-xl font-bold mb-4 text-center text-gray-800 dark:text-white header-text">
-        Expense List
-      </h2>
+      <h2 className="text-lg sm:text-xl font-bold mb-4 text-center text-gray-800 dark:text-white header-text">Expense List</h2>
       {expenses.length === 0 ? (
-        <p className="input-text text-center text-gray-500 dark:text-gray-400">No expenses added yet.</p>
+        <p className="text-center text-gray-500 dark:text-white font-alias font-semibold">No expenses added yet.</p>
       ) : (
         <div className="space-y-3">
           {expenses.map((exp, index) => (
@@ -17,8 +20,8 @@ const ExpenseList = ({ expenses, editExpense, deleteExpense }) => {
               key={index}
               className="flex flex-col sm:flex-row justify-between items-center border p-3 rounded-md dark:bg-gray-700"
             >
-              <span className="text-gray-800 dark:text-white text-sm sm:text-base input-text">
-                {exp.title} - ${exp.amount} ({exp.category})
+              <span className=" input-text text-gray-800 dark:text-white text-sm sm:text-base">
+                {exp.title} - ${exp.amount} ({exp.category}) - {formatDate(exp.date)}
               </span>
               <div className="mt-2 sm:mt-0 flex gap-2">
                 <button

@@ -19,24 +19,24 @@ const YearlyExpenseChart = ({ expenses, year, darkMode }) => {
     September: "#FF33A1", October: "#FF5733", November: "#C70039", December: "#900C3F",
   };
 
-  const filteredExpenses = expenses.filter((exp) => exp.year === year);
   const monthNames = Object.keys(monthColors);
 
-  const monthlyData = monthNames
-    .map((month) => ({
-      name: month,
-      value: filteredExpenses
-        .filter((exp) => exp.month === month)
-        .reduce((sum, exp) => sum + exp.amount, 0),
-      color: monthColors[month],
-    }))
-    .filter((month) => month.value > 0); // Only include months with expenses
+  const filteredExpenses = expenses.filter(
+    (exp) => new Date(exp.date).getFullYear() === year
+  );
 
-  // Custom tooltip to show month name and expense amount
+  const monthlyData = monthNames.map((month) => {
+    const totalExpense = filteredExpenses
+      .filter((exp) => new Date(exp.date).toLocaleString("default", { month: "long" }) === month)
+      .reduce((sum, exp) => sum + (parseFloat(exp.amount) || 0), 0);
+
+    return { name: month, value: totalExpense, color: monthColors[month] };
+  }).filter((month) => month.value > 0);
+
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="p-2 rounded shadow-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white">
+        <div className="p-2 rounded shadow-md bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200">
           <p className="font-bold">{payload[0].payload.name}</p>
           <p>Expense: ${payload[0].value}</p>
         </div>
