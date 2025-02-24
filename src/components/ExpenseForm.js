@@ -5,7 +5,7 @@ const ExpenseForm = ({ addExpense, darkMode, expenses, setFilteredExpenses }) =>
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Food");
   const [customCategory, setCustomCategory] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // Set default date to today
   const [errors, setErrors] = useState({});
 
   const handleSubmit = () => {
@@ -34,8 +34,7 @@ const ExpenseForm = ({ addExpense, darkMode, expenses, setFilteredExpenses }) =>
     setTitle("");
     setAmount("");
     setCustomCategory("");
-    setDate("");
-    // setCategory("");
+    setDate(new Date().toISOString().split('T')[0]); // Reset date to today
   };
 
   const filterExpenses = (selectedDate) => {
@@ -89,7 +88,6 @@ const ExpenseForm = ({ addExpense, darkMode, expenses, setFilteredExpenses }) =>
             value={category || ""}
             onChange={(e) => setCategory(e.target.value)}
           >
-            {/* <option value="" disabled hidden>Select Category</option> */}
             <option value="Food">Food</option>
             <option value="Travel">Travel</option>
             <option value="Entertainment">Entertainment</option>
